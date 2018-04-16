@@ -60,8 +60,8 @@ Puppet::Type.type(:docker_compose).provide(:ruby) do
 
   def destroy
     Puppet.info("Removing all containers for compose project #{project}")
-    kill_args = ['-f', name, 'kill'].insert(2, resource[:options]).compact
-    dockercompose(kill_args)
+    down_args = ['-f', name, 'down'].insert(2, resource[:options]).compact
+    dockercompose(down_args)
     rm_args = ['-f', name, 'rm', '--force', '-v'].insert(2, resource[:options]).compact
     dockercompose(rm_args)
   end
@@ -69,8 +69,8 @@ Puppet::Type.type(:docker_compose).provide(:ruby) do
   def restart
     return unless exists?
     Puppet.info("Rebuilding and Restarting all containers for compose project #{project}")
-    kill_args = ['-f', name, 'kill'].insert(2, resource[:options]).compact
-    dockercompose(kill_args)
+    down_args = ['-f', name, 'down'].insert(2, resource[:options]).compact
+    dockercompose(down_args)
     build_args = ['-f', name, 'build'].insert(2, resource[:options]).compact
     dockercompose(build_args)
     create
